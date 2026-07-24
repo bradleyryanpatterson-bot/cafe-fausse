@@ -1,4 +1,4 @@
-# Café Fausse — Web Application
+ Café Fausse — Web Application
 
 > **Authority:** All requirements are grounded in the Software Requirements Specification (SRS) and Project Instructions documents.
 
@@ -66,12 +66,9 @@ cafe-fausse-v2/
 ├── docs/
 │   ├── SRS.md                      # Software Requirements Specification (verbatim)
 │   ├── PROJECT_INSTRUCTIONS.md     # Project brief and rubric (verbatim)
-│   ├── SSOT.md                     # Approved implementation decisions and non-goals
 │   ├── requirements_traceability.md # FR/NFR traceability matrix
 │   ├── functional_requirements.md  # Functional/non-functional requirements
 │   ├── database_design.md          # Database design grounded in SRS
-│   ├── entity_diagram.md           # Course entity diagram (ED)
-│   ├── data_dictionary.md          # Field definitions and data constraints
 │   ├── schema.sql                  # PostgreSQL DDL
 │   ├── seed.sql                    # Sample data (20 customers, 14 reservations)
 │   ├── user_stories.md             # 14 user stories
@@ -97,6 +94,7 @@ CREATE DATABASE cafe_fausse;
 
 # Load schema
 \i docs/schema.sql
+#\i 'c:/users/brad/cafe-fausse-v2/docs/schema.sql'
 
 # Seed sample data
 \i docs/seed.sql
@@ -109,13 +107,20 @@ SELECT COUNT(*) FROM reservations;
 ### 2. Backend (Terminal 1)
 
 ```bash
-cd backend
+cd \users\brad\cafe-fausse-v2\backend
 python3 -m venv .venv
 source .venv/bin/activate
-export PATH="/Library/PostgreSQL/18/bin:$PATH"  # Required for psycopg2
+#.venv\scripts\activate for windows
+export PATH="/Library/PostgreSQL/18/bin;$PATH"  # Required for psycopg2
+#set PATH="c:\program files\Postgresql\18\bin":%PATH% for windows
 pip install -r requirements.txt
+pip install psycopg2-binary --prefer-binarycp 
 cp .env.example .env
 # Edit .env and supply a least-privilege DATABASE_URL for your local database.
+#copy .env.example.env for windows
+pip install flask
+pip install flask-cors
+pip install python-dotenv
 python app.py
 ```
 
@@ -124,7 +129,7 @@ The API will be available at `http://localhost:5001`.
 ### 3. Frontend (Terminal 2)
 
 ```bash
-cd frontend
+cd \users\brad\cafe-fausse-v2\frontend
 npm install
 npm start
 ```
@@ -164,20 +169,9 @@ cd frontend
 CI=true npm test
 ```
 
-### Latest Verified Results
-
-- Backend integration tests: **22 passed** against the configured local PostgreSQL development database.
-- Frontend tests: **26 passed**.
-- The reservation-time fallback follows the API's hours: Monday–Saturday start times are 5:00–10:00 PM; Sunday start times are 5:00–8:00 PM.
-
 ---
 
 ## Key Requirements
-
-### Course Data Documentation
-- [Entity Diagram (ED)](docs/entity_diagram.md): the `customers` to `reservations` one-to-many relationship.
-- [Data Dictionary](docs/data_dictionary.md): every stored attribute, data type, constraint, and business meaning.
-- [Database Design](docs/database_design.md): SRS traceability, design decisions, and database verification queries.
 
 ### Operating Hours (SRS FR-2)
 | Day | Hours |
